@@ -21,6 +21,7 @@ import {
 
 import { MdMessage, MdAttachMoney } from "react-icons/md";
 import { HiChevronDoubleRight } from "react-icons/hi2";
+import { TbError404 } from "react-icons/tb";
 
 type Tlink = {
     id: number,
@@ -62,6 +63,13 @@ export const linksList: Tlink[] = [
         text: "Orders",
         icon: <FaShoppingCart />,
         link: '/orders'
+    },
+        {
+        id: 10,
+        text: "404",
+        icon: <TbError404 />,
+        link: '/404'
+
     },
     {
         id: 6,
