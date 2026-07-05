@@ -1,3 +1,4 @@
+import { setCookie, signToken } from "@/lib/generatedToken";
 import { prisma } from "@/lib/prisma";
 import { errorHandler } from "@/middleware/errorHandler";
 import bcrypt from "bcryptjs";
@@ -14,6 +15,7 @@ export const POST = errorHandler(async (req: NextRequest) => {
         password: z.string().min(8, "Password must be at least 8 characters"),
         phone: z.string().min(11, "Invalid phone number"),
         country: z.string().min(2, "Country is required"),
+        role: z.enum(["user", "admin","manager"], "Role must be either 'user' or 'admin' or 'manager'").optional(),
     });
 
     const validation = registerSchema.safeParse(body);
@@ -34,27 +36,36 @@ export const POST = errorHandler(async (req: NextRequest) => {
 
 
     if (client) {
-        return NextResponse.json({msg:'User already exists'},{status:409})
-        
+        return NextResponse.json({ msg: 'User already exists' }, { status: 409 })
+
     }
- 
-    const hashedPassword  = await bcrypt.hash(
+
+    const hashedPassword = await bcrypt.hash(
         validation.data.password,
         12
     )
     const newClient = await prisma.user.create({
-        data: { 
+        data: {
             ...validation.data,
-            password:hashedPassword
-         }
+            password: hashedPassword
+        }
     })
 
-    const {password, ...userWithoutPassword} = newClient
+    const { password, ...userWithoutPassword } = newClient
+
+    const cookie =await setCookie(
+        {
+            id: newClient.id,
+            username: newClient.username,
+            email: newClient.email,
+            role: newClient.role
+        })
 
     return NextResponse.json(
         {
             msg: "User Created Successfully",
             data: userWithoutPassword,
+            cookie
         },
         { status: 201 }
     );

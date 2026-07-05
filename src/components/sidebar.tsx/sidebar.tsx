@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -22,6 +22,7 @@ import {
 import { MdMessage, MdAttachMoney } from "react-icons/md";
 import { HiChevronDoubleRight } from "react-icons/hi2";
 import { TbError404 } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 type Tlink = {
     id: number,
@@ -64,7 +65,7 @@ export const linksList: Tlink[] = [
         icon: <FaShoppingCart />,
         link: '/orders'
     },
-        {
+    {
         id: 10,
         text: "404",
         icon: <TbError404 />,
@@ -85,12 +86,7 @@ export const linksList: Tlink[] = [
         link: '#'
 
     },
-    {
-        id: 8,
-        text: "Notifications",
-        icon: <FaBell />,
-        link: '#'
-    },
+
     {
         id: 9,
         text: "Help",
@@ -104,6 +100,21 @@ const Sidebar = () => {
     const [open, setOpen] = React.useState(true)
 
     const pathname = usePathname()
+    const router = useRouter();
+
+    const handleLogout = async () => {
+
+        const response = await fetch('/api/auth/logout', {
+            method: "POST"
+        })
+        if (response.ok) {
+            router.push("/login");
+            router.refresh();
+            const data = await response.json()
+            toast.info(data.message);
+
+        }
+    }
 
     return (
         <aside className=" h-screen bg-[#1e1e1e] flex flex-col p-5 gap-5  ">
@@ -122,7 +133,7 @@ const Sidebar = () => {
 
             </span>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
                 {
                     linksList.map(i =>
                         <Link
@@ -154,7 +165,8 @@ const Sidebar = () => {
 
             {open &&
                 <button
-                    className="px-2 py-1 capitalize rounded-xl text-xl bg-red-500 text-white">
+                    onClick={handleLogout}
+                    className="px-2 py-1 capitalize rounded-xl text-xl bg-red-500 hover:bg-red-600 transition duration-200 text-white">
                     log out
                 </button>
             }

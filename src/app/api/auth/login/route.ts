@@ -1,3 +1,4 @@
+import { setCookie, signToken } from "@/lib/generatedToken";
 import { prisma } from "@/lib/prisma";
 import { errorHandler } from "@/middleware/errorHandler";
 import bcrypt from "bcryptjs";
@@ -34,6 +35,12 @@ export const POST = errorHandler(async (req: NextRequest) => {
             { status: 400 },
         );
     }
+        if (user.role !== "admin") {
+        return NextResponse.json(
+            { msg: "You are not authorized to access this resource" },
+            { status: 403 }
+        );
+    }
 
     const isPasswordMatch = await bcrypt.compare(body.password, user.password)
 
@@ -45,8 +52,18 @@ export const POST = errorHandler(async (req: NextRequest) => {
 
     }
 
+ 
+
+    const cookie =await setCookie(
+        {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+        })
+
     return NextResponse.json(
-        { message: "Authenticated  " },
+        { message: "Authenticated", cookie },
         { status: 200 }
 
     );

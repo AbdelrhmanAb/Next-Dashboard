@@ -24,7 +24,15 @@ interface IBodyProductUpdate {
     sales?: number
 }
 
+
+interface TPayloadToken {
+    id: string | number,
+    username: string,
+    email: string,
+    role?: "user" | "admin" | "manager"
+}
 export type {
     TProduct,
-    IBodyProductUpdate
+    IBodyProductUpdate,
+    TPayloadToken
 }

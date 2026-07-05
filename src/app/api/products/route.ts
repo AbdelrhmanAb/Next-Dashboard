@@ -8,13 +8,41 @@ import { z } from "zod";
 import { writeFile } from "fs/promises";
 import path from "path";
 
-export const GET = errorHandler(async () => {
+export const GET = errorHandler(async (req: NextRequest) => {
+  const search = req.nextUrl.searchParams.get("search") || "";
+  const page = Number(req.nextUrl.searchParams.get("page")) || 1;
+  const limit = Number(req.nextUrl.searchParams.get("limit")) || 10;
 
-    const list = await prisma.product.findMany()
+  const where = {
+    name: {
+      contains: search,
+    },
+  };
 
+  const totalProducts = await prisma.product.count({
+    where,
+  });
 
-    return NextResponse.json({ msg: 'SUCCESS', list }, { status: 200 })
-})
+  const list = await prisma.product.findMany({
+    where,
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return NextResponse.json(
+    {
+      msg: "SUCCESS",
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+      list,
+    },
+    { status: 200 }
+  );
+});
 
 
 export const POST = errorHandler(async (req: NextRequest) => {
