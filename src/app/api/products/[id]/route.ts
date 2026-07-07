@@ -2,7 +2,6 @@ import { prisma } from "@/lib/prisma";
 import { errorHandler } from "@/middleware/errorHandler";
 import { IBodyProductUpdate } from "@/utils/types";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 
 export const GET = errorHandler( async (req: NextRequest, { params }: { params: { id: string } }) => {
 

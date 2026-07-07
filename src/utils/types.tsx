@@ -31,8 +31,11 @@ interface TPayloadToken {
     email: string,
     role?: "user" | "admin" | "manager"
 }
+interface IPayload  {id:number, username?:string, email?:string, phone?:string, country?:string}
+
 export type {
     TProduct,
     IBodyProductUpdate,
-    TPayloadToken
+    TPayloadToken,
+    IPayload
 }

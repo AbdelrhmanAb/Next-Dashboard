@@ -3,9 +3,9 @@ import { errorHandler } from "@/middleware/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
 
 interface Props {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export async function GET(

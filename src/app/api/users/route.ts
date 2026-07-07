@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/generatedToken";
+import { IPayload } from "@/utils/types";
 export async function GET(req: NextRequest) {
 
     const cookie = req.cookies.get("jwtToken")?.value;
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
         );
     }
 
-    const payload = await verifyToken (cookie);
+    const payload : IPayload = await verifyToken (cookie);
 
 
 

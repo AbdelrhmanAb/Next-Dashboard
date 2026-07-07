@@ -1,4 +1,4 @@
-import { setCookie, signToken } from "@/lib/generatedToken";
+import { setCookie } from "@/lib/generatedToken";
 import { prisma } from "@/lib/prisma";
 import { errorHandler } from "@/middleware/errorHandler";
 import bcrypt from "bcryptjs";

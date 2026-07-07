@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/generatedToken";
 import { errorHandler } from "@/middleware/errorHandler";
 import { NextRequest, NextResponse } from "next/server";
+import { IPayload } from "@/utils/types";
+
 
 export const GET = errorHandler(async (req: NextRequest) => {
 
@@ -13,7 +15,7 @@ export const GET = errorHandler(async (req: NextRequest) => {
         );
     }
 
-    const payload =await verifyToken(cookie);
+    const payload: IPayload =await verifyToken(cookie);
   
 
 
