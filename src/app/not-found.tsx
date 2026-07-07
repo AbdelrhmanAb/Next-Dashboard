@@ -8,14 +8,14 @@ export default function NotFound() {
 
     return (
         <div className=" flex flex-col items-center ">
-            <div className="relative h-115 w-9/12 overflow-hidden">
+            <div className="relative h-115 w-9/12 overflow-auto">
                 <Image
                     src={Not404Pic}
                     alt=""
                     // width={2000}
-                    height={700}
-                    className="object-contain w-full"
-                    // fill
+                    // height={700}
+                    className="object-contain  w-full"
+                    fill
 
                 />
             </div>
