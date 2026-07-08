@@ -47,7 +47,11 @@ const ProductsTable = () => {
                         placeholder='Search Products..'
                     />
                 </div>
-            </div>
+                <button
+                    className="flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-md transition-all duration-200 hover:bg-green-700 hover:shadow-lg active:scale-95"
+                >
+                    + Add User
+                </button>            </div>
 
             <div className="overflow-x-auto rounded-2xl bg-[#1e1e1e] p-4">
 
